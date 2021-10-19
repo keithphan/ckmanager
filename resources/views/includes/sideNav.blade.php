@@ -40,11 +40,13 @@
                         <a class="nav-link {{ Request::segment(2) == 'companies' ? 'active' : '' }}" href="{{ route('companies.index') }}">
                             {{ __('Companies') }}
                         </a>
-                        {{-- <!-- Nested Sidenav Accordion (Goods -> Categories)-->
-                        <a class="nav-link {{ Request::segment(2) == 'categories' ? 'active' : '' }}" href="{{ route('categories.index') }}">
-                            {{ __('Categories') }}
-                        </a>
-                        <!-- Nested Sidenav Accordion (Goods -> Products)-->
+                        <!-- Nested Sidenav Accordion (Goods -> Categories)-->
+                        @if (Auth::user()->role->name == 'administrator')
+                            <a class="nav-link {{ Request::segment(2) == 'categories' ? 'active' : '' }}" href="{{ route('categories.index') }}">
+                                {{ __('Categories') }}
+                            </a>
+                        @endif
+                        {{-- <!-- Nested Sidenav Accordion (Goods -> Products)-->
                         <a class="nav-link {{ Request::segment(2) == 'products' ? 'active' : '' }}" href="{{ route('products.index') }}">
                             {{ __('Products') }}
                         </a> --}}

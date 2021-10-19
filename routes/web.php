@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Auth;
@@ -28,4 +29,11 @@ Route::group(['prefix' => 'goods', 'middleware' => ['auth']], function(){
     // Companies Routes
     Route::resource('companies', CompanyController::class);
     Route::post('companies/deleteSelected', [CompanyController::class, 'destroySelected'])->name('companies.destroySelected');
+
+    Route::group(['middleware' => ["isAdministrator"]], function(){
+
+        //Categories Routes
+        Route::resource('categories', CategoryController::class);
+        Route::post('categories/deleteSelected', [CategoryController::class, 'destroySelected'])->name('categories.destroySelected');
+    });
 });
