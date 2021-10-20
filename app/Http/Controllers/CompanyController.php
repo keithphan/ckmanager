@@ -66,7 +66,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**

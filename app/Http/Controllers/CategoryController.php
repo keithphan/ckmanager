@@ -68,7 +68,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -140,8 +140,8 @@ class CategoryController extends Controller
 
         if($category){
             $category->delete();
-            Session::flash('message', 'Deleted category.');
-            Session::flash('class', 'bg-danger');
+            Session::flash('message', 'Deleted category successfully.');
+            Session::flash('class', 'bg-success');
         }else{
             $this->isNotExisted();
         }
@@ -166,8 +166,8 @@ class CategoryController extends Controller
             }
         }
 
-        Session::flash('message', 'Deleted categories.');
-        Session::flash('class', 'bg-danger');
+        Session::flash('message', 'Deleted categories successfully.');
+        Session::flash('class', 'bg-success');
         return redirect()->back();
     }
 

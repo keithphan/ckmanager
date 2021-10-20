@@ -46,13 +46,13 @@
                                 {{ __('Categories') }}
                             </a>
                         @endif
-                        {{-- <!-- Nested Sidenav Accordion (Goods -> Products)-->
+                        <!-- Nested Sidenav Accordion (Goods -> Products)-->
                         <a class="nav-link {{ Request::segment(2) == 'products' ? 'active' : '' }}" href="{{ route('products.index') }}">
                             {{ __('Products') }}
-                        </a> --}}
+                        </a>
                     </nav>
                 </div>
-                {{-- <!-- Sidenav Accordion (Flows)-->
+                <!-- Sidenav Accordion (Flows)-->
                 <a class="nav-link {{ Request::segment(1) == 'orders' ? 'active' : 'collapsed' }}" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
                     <div class="nav-link-icon"><i data-feather="list"></i></div>
                     {{ __('Orders') }}
@@ -65,7 +65,7 @@
                 </div>
 
 
-                <a class="nav-link {{ Request::segment(1) == 'customers' ? 'active' : 'collapsed' }}" href="{{ route("customers.index") }}">
+                {{-- <a class="nav-link {{ Request::segment(1) == 'customers' ? 'active' : 'collapsed' }}" href="{{ route("customers.index") }}">
                     <div class="nav-link-icon"><i data-feather="users"></i></div>
                     {{ __('Customers') }}
                     
