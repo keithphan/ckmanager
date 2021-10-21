@@ -52,6 +52,12 @@
                         </a>
                     </nav>
                 </div>
+
+                <a class="nav-link {{ Request::segment(1) == 'customers' ? 'active' : 'collapsed' }}" href="{{ route("customers.index") }}">
+                    <div class="nav-link-icon"><i data-feather="users"></i></div>
+                    {{ __('Customers') }}
+                </a>
+
                 <!-- Sidenav Accordion (Flows)-->
                 <a class="nav-link {{ Request::segment(1) == 'orders' ? 'active' : 'collapsed' }}" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
                     <div class="nav-link-icon"><i data-feather="list"></i></div>
@@ -64,12 +70,6 @@
                     </nav>
                 </div>
 
-
-                {{-- <a class="nav-link {{ Request::segment(1) == 'customers' ? 'active' : 'collapsed' }}" href="{{ route("customers.index") }}">
-                    <div class="nav-link-icon"><i data-feather="users"></i></div>
-                    {{ __('Customers') }}
-                    
-                </a> --}}
             </div>
         </div>
         <!-- Sidenav Footer-->

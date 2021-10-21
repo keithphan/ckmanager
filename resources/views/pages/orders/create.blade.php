@@ -34,6 +34,30 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
+                                <label for="customer">{{ __('Choose customer') }}<span class="required-input">*</span></label>
+                                <select name="customer" id="customer" style="width: 100%;" class="form-control @error('customer') is-invalid @enderror">
+                                    <option value="">None</option>
+                                    @foreach ($customers as $customer)
+                                        <option value="{{ $customer->id }}">{{ $customer->name }} - {{ $customer->phone_number }} - {{ $customer->email }}</option>
+                                    @endforeach
+                                </select>
+                                @error('customer')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <input type="text" class="company_id" name="company_id" value="{{ $company->id }}" hidden>
+                            </div>
+                        </div>
+                        <p class="mt-4 mb-5">Or create a new customer:</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
                                 <label for="customerName">{{ __('Full name') }}<span class="required-input">*</span></label>
                                 <input class="form-control @error('customerName') is-invalid @enderror" id="customerName" type="text" name="customerName" value="{{ old('customerName') }}">
                                 @error('customerName')

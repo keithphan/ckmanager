@@ -152,6 +152,11 @@ $(function () {
         // allowClear: true,
     });
 
+    $('#customer').select2({
+        theme: 'bootstrap-5',
+        // allowClear: true,
+    });
+
     $(document).on("click", "#btnImgAdd", function () {
         var number = $(".rows").children().length;
         var ele = $("<div class='row'></div>").html("<div class='col-12'><div class='mb-3'><div class='input-group'><input id='gallery-" + (number + 1) + "' class='form-control' type='text' name='gallery[]'><a id='lfm-" + (number + 1) + "' data-input='gallery-" + (number + 1) + "' data-preview='holder-" + (number + 1) + "' class='btn btn-primary'>Choose</a></div><div id='holder-" + (number + 1) + "' style='margin-top:15px;margin-bottom:15px;max-height:200px;'></div></div></div>");
@@ -170,7 +175,7 @@ $(function () {
         }
     });
 
-    $(document).on("keyup", '#customerDeliverAddress', function () {
+    $(document).on("keyup change", '#customerDeliverAddress', function () {
         var customerDeliverAddress = $("#customerDeliverAddress").val();
         $("#filled_address").text(customerDeliverAddress);
     });
@@ -202,6 +207,36 @@ $(function () {
                 $("#total").val(response.total / 100 + parseInt(shipping_fee ? shipping_fee : 0));
             }
         });
+    });
+
+    $(document).on("change", '#customer', function () {
+        let customer_id = this.value;
+
+        if(customer_id!= ""){
+            let company_id = $('.company_id').val();
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            
+            $.ajax({
+                type: "POST",
+                url: "/customers/getCustomerInfoByIdAndCompanyId",
+                data: {_token: CSRF_TOKEN, data: [customer_id, company_id]},
+                dataType: "json",
+                success: function (response) {
+                    let customer = response.customer[0];
+                    $("#customerName").val(customer.name);
+                    $("#customerPhoneNumber").val(customer.phone_number);
+                    $("#customerEmailAddress").val(customer.email);
+                    $("#customerDeliverAddress").val(response.deliverAddress.address);
+                    $("#filled_address").text(response.deliverAddress.address);
+                }
+            });
+        }else{
+            $("#customerName").val("");
+            $("#customerPhoneNumber").val("");
+            $("#customerEmailAddress").val("");
+            $("#customerDeliverAddress").val("");
+            $("#filled_address").text("...");
+        }
     });
 });
 

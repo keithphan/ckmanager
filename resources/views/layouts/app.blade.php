@@ -56,7 +56,7 @@
                 <strong class="me-auto">Notification</strong>
                 <button class="ml-2 mb-1 btn-close btn-close-white" type="button" data-bs-dismiss="toast" aria-label="Close">                                                                </button>
             </div>
-            <div class="toast-body bg-white">{{ Session::get('message') }}</div>
+            <div class="toast-body bg-white">{!! Session::get('message') !!}</div>
         </div>
     </div>
 
@@ -115,7 +115,7 @@
                         @endif
                     @else
                         @if(Request::segment(1) != 'dashboard')
-                            {{ route( Request::segment(1) . '.destroy', 'id') }}
+                            {{ route( Request::segment(1) . '.destroySelected') }}
                         @endif
                     @endif
                     " method="POST">

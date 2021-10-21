@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -43,7 +44,13 @@ Route::group(['prefix' => 'goods', 'middleware' => ['auth']], function(){
     Route::post('products/deleteSelected', [ProductController::class, 'destroySelected'])->name('products.destroySelected');
 });
 
-//Orders Routes
-Route::resource('orders', OrderController::class);
-Route::post('orders/deleteSelected', [OrderController::class, 'destroySelected'])->name('orders.destroySelected');
-Route::post('orders/getTotalPriceByIds', [OrderController::class, 'getTotalPriceByIds'])->name('orders.getTotalPriceByIds');
+Route::group(['middleware' => ['auth']], function(){
+    //Orders Routes
+    Route::resource('orders', OrderController::class);
+    Route::post('orders/deleteSelected', [OrderController::class, 'destroySelected'])->name('orders.destroySelected');
+    Route::post('orders/getTotalPriceByIds', [OrderController::class, 'getTotalPriceByIds'])->name('orders.getTotalPriceByIds');
+
+    Route::resource('customers', CustomerController::class);
+    Route::post('customers/deleteSelected', [CustomerController::class, 'destroySelected'])->name('customers.destroySelected');
+    Route::post('customers/getCustomerInfoByIdAndCompanyId', [CustomerController::class, 'getCustomerInfoByIdAndCompanyId']);
+});

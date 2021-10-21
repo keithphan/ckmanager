@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -26,17 +28,38 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $products = Product::where('user_id', Auth::user()->id)->get();
+    public function create(Request $request)
+    {   
+        // Return create order page.
+        if($request->company){
+            $company = Company::where([['user_id', Auth::user()->id], ['slug', $request->company]])->get('id')->first();
 
-        if(!$products->first()){
-            Session::flash('message', 'You do not have any products!');
+            if(!$company){
+                abort(404);
+            }
+
+            $products = Product::where([['user_id', Auth::user()->id], ['company_id', $company->id]])->get();
+            $customers = Customer::where([['user_id', Auth::user()->id], ['company_id', $company->id]])->get();
+
+            if(!$products->first()){
+                Session::flash('message', "You do not have any products! <a href='" . route('products.create') . "'>Create one</a>");
+                Session::flash('class', 'bg-warning');
+                return redirect()->back();
+            }
+
+            return view('pages.orders.create', compact('products', 'customers', 'company'));
+        }
+
+        // Return all company for user to choose.
+        $companies = Company::where('user_id', Auth::user()->id)->get();
+
+        if(!$companies->first()){
+            Session::flash('message', "You do not have any companies! <a href='" . route('companies.create') . "'>Create one</a>");
             Session::flash('class', 'bg-warning');
             return redirect()->back();
         }
-
-        return view('pages.orders.create', compact('products'));
+        return view('pages.orders.companies', compact('companies'));
+        
     }
 
     /**
