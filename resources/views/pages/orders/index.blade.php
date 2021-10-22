@@ -64,7 +64,7 @@
                             <td style="text-align: center">
                                 <input class="selectedItems" type="checkbox" name="selectedItems[]" value="{{ $order->id }}">
                             </td>
-                            <td>{{ $order->customer_name }}</td>
+                            <td>{{ $order->customer->name }}</td>
                             <td>AU ${{ ($order->total + $order->shipping_fee) /100 }}</td>
                             <td>
                                 @if ($order->deleted_at)

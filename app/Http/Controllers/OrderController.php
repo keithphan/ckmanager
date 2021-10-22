@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\DeliverAddress;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,7 +72,99 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = null;
+
+        if($request->customer){
+            $customer = Customer::where([['user_id', Auth::user()->id], ['company_id', $request->company_id]])->find($request->customer);
+        }else{
+            $request->validate(
+                [
+                    'customerName' => 'required',
+                    'customerPhoneNumber' => 'required',
+                    'customerDeliverAddress' => 'required',
+                    'selectedItems' => 'required',
+                ],
+                [
+    
+                ],
+                [
+                    'selectedItems' => "order details"
+                ],
+            );
+
+            $customer = Customer::create([
+                'name' => $request->customerName,
+                'phone_number' => $request->customerPhoneNumber,
+                'email' => $request->customerEmailAddress,
+                'company_id' => $request->company_id,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            DeliverAddress::create([
+                'address' => $request->customerDeliverAddress,
+                'customer_id' => $customer->id,
+                'is_default' => 1,
+            ]);
+        }
+
+        $request->validate(
+            [
+                'selectedItems' => 'required',
+            ],
+            [],
+            [
+                'selectedItems' => "order details"
+            ],
+        );
+
+        $productList = $request->selectedItems;
+        $itemsQty = $request->itemsQty;
+
+        if($productList){
+            $total = 0;
+
+            foreach($productList as $productKey => $product){
+                foreach($itemsQty as $qtyKey =>  $qty){
+                    if($productKey == $qtyKey){
+                        $productFormDb = Product::find($product);
+                        $total += $productFormDb->price * $qty;
+                        $productFormDb->update([
+                            'quantity' => $productFormDb->quantity - $qty,
+                        ]);
+                    }
+                }
+            }
+
+            $order = Order::create([
+                'customer_id' => $customer->id,
+                'shipping_fee' => $request->shipping_fee,
+                'payment_method' => $request->payment_method,
+                'total' => $total,
+                'description' => $request->description,
+                'user_id' => Auth::user()->id,
+                'status' => 'waitting',
+            ]);
+
+            foreach($productList as $productKey => $product){
+                foreach($itemsQty as $qtyKey =>  $qty){
+                    if($productKey == $qtyKey){
+                       OrderDetail::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product,
+                        'quantity' => $qty,
+                       ]);
+                    }
+                }
+            }
+
+            Session::flash('message', 'Create order successfully.');
+            Session::flash('class', 'bg-success');
+            return redirect()->back();
+        }
+
+        Session::flash('message', 'No selected products.');
+        Session::flash('class', 'bg-danger');
+        return redirect()->back();
     }
 
     /**
@@ -113,9 +207,41 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $order = Order::find($request->id);
+
+        if($order){
+            $order->delete();
+            Session::flash('message', 'Deleted order successfully.');
+            Session::flash('class', 'bg-success');
+        }else{
+            $this->isNotExisted();
+        }
+
+        return redirect()->back();
+    }
+
+    public function destroySelected(Request $request)
+    {
+        if(!isset($request->itemIds)){
+            Session::flash('message', 'No orders selected. Please select!');
+            Session::flash('class', 'bg-warning');
+            return redirect()->back();
+        }
+
+        $orderIds = explode(',', $request->itemIds);
+
+        foreach($orderIds as $id){
+            $order = Order::find($id);
+            if($order){
+                $order->delete();
+            }
+        }
+
+        Session::flash('message', 'Deleted orders successfully.');
+        Session::flash('class', 'bg-success');
+        return redirect()->back();
     }
 
     public function getTotalPriceByIds(Request $request){
