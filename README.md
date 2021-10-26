@@ -12,7 +12,7 @@ CkManager is a web-application to manage business operations from many user's e-
 CkManager provides many APIs to front-end websites for using:
 
 - Display products.
-- Cutomer Login/Register.
+- Customer Login/Register.
 - Place orders.
 
 ## Running CkManager
