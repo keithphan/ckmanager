@@ -1,6 +1,4 @@
-<p align="center">CkManager</p>
-
-## About CkManager
+# CkManager
 
 CkManager is a web-application to manage business operations from many user's e-commerce websites:
 
@@ -9,7 +7,7 @@ CkManager is a web-application to manage business operations from many user's e-
 - Orders.
 - Customer.
 
-## Prodive APIs
+## Provides APIs
 
 CkManager provides many APIs to front-end websites for using:
 
