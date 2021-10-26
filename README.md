@@ -1,6 +1,4 @@
-<p align="center">CkManager</p>
-
-## About CkManager
+# CkManager
 
 CkManager is a web-application to manage business operations from many user's e-commerce websites:
 
@@ -9,12 +7,12 @@ CkManager is a web-application to manage business operations from many user's e-
 - Orders.
 - Customer.
 
-## Prodive APIs
+## Provides APIs
 
 CkManager provides many APIs to front-end websites for using:
 
 - Display products.
-- Cutomer Login/Register.
+- Customer Login/Register.
 - Place orders.
 
 ## Running CkManager
@@ -35,6 +33,10 @@ php artisan migrate
 
 ```bash
 php artisan db:seed
+```
+
+```bash
+php artisan storage:link
 ```
 
 To start CkManager:
