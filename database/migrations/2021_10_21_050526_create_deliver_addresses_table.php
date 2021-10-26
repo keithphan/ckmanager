@@ -16,7 +16,7 @@ class CreateDeliverAddressesTable extends Migration
         Schema::create('deliver_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->integer('is_default');
             $table->timestamps();
         });

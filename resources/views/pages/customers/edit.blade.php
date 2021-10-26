@@ -105,10 +105,14 @@
                 </div>
                 <div class="card-body">
                     <div class="rows">
-                        @foreach ($customer->deliverAddresses as $address)
+                        <label for="customerDeliverAddress">{{ __('Deliver address') }}</label>
+                        @foreach ($customer->deliverAddresses as $index => $address)
                             <div class="row">
-                                <div class="mb-3">
-                                    <label for="customerDeliverAddress">{{ __('Deliver address') }} {{ $address->is_default ?  __("(Default)") : "" }}</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
+                                        <input type="radio" {{ $address->is_default ?  "checked" : "" }}  name="default" value="{{ $index }}">
+                                    </span>
+                                    <input type="hidden" name="customerDeliverAddressIds[]" value="{{ $address->id }}">
                                     <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address->address }}">
                                 </div>
                             </div>

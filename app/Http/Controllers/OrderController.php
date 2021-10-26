@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         if($request->has('trash')){
             $orders = Order::where('user_id', Auth::user()->id)->onlyTrashed()->get();
-            return view('pages.orders.index', compact('orders'));
+            return view('pages.orders.trash', compact('orders'));
         }
 
         $orders = Order::where('user_id', Auth::user()->id)->get();

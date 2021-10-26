@@ -167,8 +167,8 @@ $(function () {
 
     $(document).on("click", "#btnAddressAdd", function () {
         var number = $(".rows").children().length;
-        if(number < 5){
-            var ele = $("<div class='row'></div>").html("<div class='mb-3'><label for='customerDeliverAddress'>Deliver address</label><input class='form-control' id='customerDeliverAddress' type='text' name='customerDeliverAddresses[]'></div>");
+        if(number <= 5){
+            var ele = $("<div class='row'></div>").html("<div class='input-group mb-3'><span class='input-group-text' data-bs-toggle='tooltip' data-bs-placement='left' title='Set as default'><input type='radio' name='default' value=" + (number - 1) + "></span><input class='form-control' id='customerDeliverAddress' type='text' name='customerDeliverAddresses[]'></div>");
             $(".rows").append(ele);
         }else{
             alert("Only 5 addresses allowed");

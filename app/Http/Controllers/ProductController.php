@@ -39,7 +39,7 @@ class ProductController extends Controller
             $companies = Company::where('user_id', Auth::user()->id)->get();
 
             if(!$companies->first()){
-                Session::flash('message', 'Please create at least one company!');
+                Session::flash('message', "You do not have any companies! <a href='" . route('companies.create') . "'>Create one</a>");
                 Session::flash('class', 'bg-warning');
                 return redirect()->back();
             }

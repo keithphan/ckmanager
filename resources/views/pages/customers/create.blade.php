@@ -100,15 +100,14 @@
                 </div>
                 <div class="card-body">
                     <div class="rows">
+                        <label for="customerDeliverAddress">{{ __('Deliver addresses') }}</label>
                         <div class="row">
-                            <div class="mb-3">
-                                <label for="customerDeliverAddress">{{ __('Deliver address') }} ({{ __("Default") }})</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default"><input type="radio" checked name="default" value="0"></span>
                                 <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]">
                             </div>
                         </div>
                     </div>
-
-
 
                     @error('customerDeliverAddresses.*')
                         <span class="invalid-feedback d-block mb-2" role="alert">

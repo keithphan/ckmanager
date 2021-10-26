@@ -8,10 +8,10 @@
                 <div class="row align-items-center justify-content-between">
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
-                            <div class="page-header-icon"><i data-feather="shopping-cart"></i></div>
-                            {{ __('Orders') }}
+                            <div class="page-header-icon"><i data-feather="trash-2"></i></div>
+                            {{ __('Deleted Orders') }}
                         </h1>
-                        <div class="page-header-subtitle">{{ __('Manage all orders here.') }}</div>
+                        <div class="page-header-subtitle">{{ __('Manage all deleted orders here.') }}</div>
                     </div>
                 </div>
             </div>
@@ -21,11 +21,8 @@
     <div class="container-xl px-4 mt-n10">
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                {{ __('Orders') }}
+                {{ __('Deleted Orders') }}
                 <div>
-                    <a class="btn btn-primary btn-icon" href="{{ route('orders.create') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Create an order">
-                        <i class="fas fa-plus"></i>
-                    </a>
                     <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="Delete selected orders">
                         <button id="deleteItems" class="btn btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2">
                             <i class="fas fa-trash-alt"></i>
