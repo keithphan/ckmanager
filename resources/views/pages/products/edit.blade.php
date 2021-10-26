@@ -175,7 +175,7 @@
                             <div class="mb-3">
                                 <label for="price">Price</label>
                                 <div class="input-group">
-                                    <div class="input-group-text">AU$</div>
+                                    <div class="input-group-text">$</div>
                                     <input class="form-control @error('price') is-invalid @enderror" id="price" type="number" name="price" value="{{ $product->price / 100 }}" step="any">
                                 </div>
                                 @error('price')
@@ -187,7 +187,7 @@
                             <div class="mb-3">
                                 <label for="original_price">Original Price</label>
                                 <div class="input-group">
-                                    <div class="input-group-text">AU$</div>
+                                    <div class="input-group-text">$</div>
                                     <input class="form-control @error('original_price') is-invalid @enderror" id="original_price" type="number" name="original_price" value="{{ $product->original_price / 100 }}" step="any">
                                 </div>
                                 @error('original_price')

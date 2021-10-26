@@ -66,7 +66,10 @@
                 </a>
                 <div class="collapse {{ Request::segment(1) == 'orders' ? 'show' : '' }}" id="collapseFlows" data-bs-parent="#accordionSidenav">
                     <nav class="sidenav-menu-nested nav">
-                        <a class="nav-link {{ Request::segment(1) == 'orders' ? 'active' : '' }}" href="{{ route('orders.index') }}">{{ __("All Orders") }}</a>
+                        <a class="nav-link {{ Request::segment(1) == 'orders' && !Request::has('trash') ? 'active' : '' }}" href="{{ route('orders.index') }}">{{ __("All Orders") }}</a>
+                    </nav>
+                    <nav class="sidenav-menu-nested nav">
+                        <a class="nav-link {{ Request::segment(1) == 'orders' && Request::has('trash') ? 'active' : '' }}" href="{{ route('orders.index', 'trash') }}">{{ __("Deleted Orders") }}</a>
                     </nav>
                 </div>
 

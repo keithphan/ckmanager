@@ -69,7 +69,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->quantity }}</td>
-                                <td>AU ${{ $product->price  / 100 }}</td>
+                                <td>${{ $product->price  / 100 }}</td>
                                 <td>{{ $product->company->name }}</td>
                                 <td style="text-align: center">
                                     <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('products.edit', $product->id) }}"><i class="far fa-edit"></i></a>

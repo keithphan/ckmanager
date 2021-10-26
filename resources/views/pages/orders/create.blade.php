@@ -183,7 +183,7 @@
                             <div class="mb-3">
                                 <label for="shipping_fee">{{ __("Shipping fee") }}</label>
                                 <div class="input-group">
-                                    <div class="input-group-text">AU$</div>
+                                    <div class="input-group-text">$</div>
                                     <input class="form-control @error('shipping_fee') is-invalid @enderror" id="shipping_fee" type="number" name="shipping_fee" step="any" value="{{ old('shipping_fee') / 100 }}">
                                 </div>
                                 @error('shipping_fee')
@@ -204,7 +204,7 @@
                             <div class="mb-3">
                                 <label for="total">{{ __("Total") }}</label>
                                 <div class="input-group">
-                                    <div class="input-group-text">AU$</div>
+                                    <div class="input-group-text">$</div>
                                     <input class="form-control" id="total" type="number" name="total" step="any" value="0" disabled>
                                 </div>
                             </div>

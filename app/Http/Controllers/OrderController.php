@@ -19,9 +19,14 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::where('user_id', Auth::user()->id)->withTrashed()->get();
+        if($request->has('trash')){
+            $orders = Order::where('user_id', Auth::user()->id)->onlyTrashed()->get();
+            return view('pages.orders.index', compact('orders'));
+        }
+
+        $orders = Order::where('user_id', Auth::user()->id)->get();
         return view('pages.orders.index', compact('orders'));
     }
 
@@ -209,10 +214,14 @@ class OrderController extends Controller
      */
     public function destroy(Request $request)
     {
-        $order = Order::find($request->id);
+        $order = Order::where('user_id', Auth::user()->id)->withTrashed()->find($request->id);
 
         if($order){
-            $order->delete();
+            if($order->deleted_at){
+                $order->forceDelete();
+            }else{
+                $order->delete();
+            }
             Session::flash('message', 'Deleted order successfully.');
             Session::flash('class', 'bg-success');
         }else{
@@ -233,9 +242,13 @@ class OrderController extends Controller
         $orderIds = explode(',', $request->itemIds);
 
         foreach($orderIds as $id){
-            $order = Order::find($id);
+            $order = Order::where('user_id', Auth::user()->id)->withTrashed()->find($id);
             if($order){
-                $order->delete();
+                if($order->deleted_at){
+                    $order->forceDelete();
+                }else{
+                    $order->delete();
+                }
             }
         }
 
