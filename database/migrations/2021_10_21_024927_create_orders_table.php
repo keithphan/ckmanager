@@ -16,6 +16,10 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->string('customer_name');
+            $table->string('customer_phoneNumber');
+            $table->string('customer_email')->nullable();
+            $table->string('customer_address');
             $table->bigInteger('shipping_fee');
             $table->string('payment_method');
             $table->bigInteger('total');

@@ -9,9 +9,9 @@
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
                             <div class="page-header-icon"><i data-feather="edit"></i></div>
-                            {{ __('Update your brands') }}
+                            {{ __('Edit your companies') }}
                         </h1>
-                        <div class="page-header-subtitle">{{ __('Update your brand here.') }}</div>
+                        <div class="page-header-subtitle">{{ __('Edit your company here.') }}</div>
                     </div>
                 </div>
             </div>

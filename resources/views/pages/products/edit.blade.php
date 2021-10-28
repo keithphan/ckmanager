@@ -9,10 +9,10 @@
                 <div class="row align-items-center justify-content-between">
                     <div class="col-auto mt-4">
                         <h1 class="page-header-title">
-                            <div class="page-header-icon"><i data-feather="plus-circle"></i></div>
-                            {{ __('Create your products') }}
+                            <div class="page-header-icon"><i data-feather="edit"></i></div>
+                            {{ __('Edit your products') }}
                         </h1>
-                        <div class="page-header-subtitle">{{ __('Create a new product here.') }}</div>
+                        <div class="page-header-subtitle">{{ __('Edit your product here.') }}</div>
                     </div>
                 </div>
             </div>

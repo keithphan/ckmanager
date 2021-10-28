@@ -83,7 +83,7 @@
                             </td>
                             <td>{{ $order->created_at }}</td>
                             <td style="text-align: center">
-                                <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('orders.show', $order->id) }}"><i class="far fa-edit"></i></a>
+                                <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('orders.edit', $order->id) }}"><i class="far fa-edit"></i></a>
                                 {{-- <button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button> --}}
                                 <button class="btn btn-datatable btn-icon btn-transparent-dark delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-id={{ $order->id }}>
                                   @if ($order->deleted_at)

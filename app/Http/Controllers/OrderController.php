@@ -133,15 +133,19 @@ class OrderController extends Controller
                     if($productKey == $qtyKey){
                         $productFormDb = Product::find($product);
                         $total += $productFormDb->price * $qty;
-                        $productFormDb->update([
-                            'quantity' => $productFormDb->quantity - $qty,
-                        ]);
+                        // $productFormDb->update([
+                        //     'quantity' => $productFormDb->quantity - $qty,
+                        // ]);
                     }
                 }
             }
 
             $order = Order::create([
                 'customer_id' => $customer->id,
+                'customer_name' => $request->customerName,
+                'customer_phoneNumber' => $request->customerPhoneNumber,
+                'customer_email' => $request->customerEmailAddress,
+                'customer_address' => $request->customerDeliverAddress,
                 'shipping_fee' => $request->shipping_fee,
                 'payment_method' => $request->payment_method,
                 'total' => $total,
@@ -191,7 +195,27 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order = Order::where('user_id', Auth::user()->id)->find($id);
+
+        if(!$order){
+            $this->isNotExisted();
+            return redirect()->back();
+        }
+
+        if($order->status != 'waitting'){
+            Session::flash('message', 'You cannot edit this order!');
+            Session::flash('class', 'bg-warning');
+            return redirect()->back();
+        }
+
+        $customers = Customer::where([
+            ['user_id', Auth::user()->id],
+            ['company_id', $order->customer->company_id]
+        ])->get();
+
+        $products = Product::where([['user_id', Auth::user()->id], ['company_id', $order->customer->company_id]])->get();
+        $orderDetails = $order->orderDetails;
+        return view('pages.orders.edit', compact('order', 'customers', 'products', 'orderDetails'));
     }
 
     /**
@@ -203,7 +227,138 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+
+        $customer = null;
+
+        if($request->customer){
+            $customer = Customer::where([['user_id', Auth::user()->id], ['company_id', $request->company_id]])->find($request->customer);
+        }else{
+            $request->validate(
+                [
+                    'customerName' => 'required',
+                    'customerPhoneNumber' => 'required',
+                    'customerDeliverAddress' => 'required',
+                    'selectedItems' => 'required',
+                ],
+                [
+    
+                ],
+                [
+                    'selectedItems' => "order details"
+                ],
+            );
+
+            $customer = Customer::create([
+                'name' => $request->customerName,
+                'phone_number' => $request->customerPhoneNumber,
+                'email' => $request->customerEmailAddress,
+                'company_id' => $request->company_id,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            DeliverAddress::create([
+                'address' => $request->customerDeliverAddress,
+                'customer_id' => $customer->id,
+                'is_default' => 1,
+            ]);
+        }
+
+        $request->validate(
+            [
+                'selectedItems' => 'required',
+            ],
+            [],
+            [
+                'selectedItems' => "order details"
+            ],
+        );
+
+        $productList = $request->selectedItems;
+        $itemsQty = $request->itemsQty;
+
+        if($productList){
+            $total = 0;
+
+            foreach($productList as $productKey => $product){
+                foreach($itemsQty as $qtyKey =>  $qty){
+                    if($productKey == $qtyKey){
+                        $productFormDb = Product::find($product);
+                        $total += $productFormDb->price * $qty;
+                        // $productFormDb->update([
+                        //     'quantity' => $productFormDb->quantity - $qty,
+                        // ]);
+                    }
+                }
+            }
+
+            $order = Order::where([
+                ['user_id', Auth::user()->id],
+            ])->find($id);
+
+            $order->update([
+                'customer_id' => $customer->id,
+                'customer_name' => $request->customerName,
+                'customer_phoneNumber' => $request->customerPhoneNumber,
+                'customer_email' => $request->customerEmailAddress,
+                'customer_address' => $request->customerDeliverAddress,
+                'shipping_fee' => $request->shipping_fee,
+                'payment_method' => $request->payment_method,
+                'total' => $total,
+                'description' => $request->description,
+            ]);
+
+            $orderDetails = $order->orderDetails;
+            if(count($orderDetails) <= count($productList)){
+                foreach($productList as $productKey => $product){
+                    if(in_array($product, $orderDetails->pluck('product_id')->toArray())){
+                        foreach($itemsQty as $qtyKey =>  $qty){
+                            if($productKey == $qtyKey){
+                                $orderDetails->where('product_id', $product)->first()->update([
+                                    'quantity' => $qty,
+                                ]);
+                            }
+                        }
+                    }else{
+                        foreach($itemsQty as $qtyKey =>  $qty){
+                            if($productKey == $qtyKey){
+                                OrderDetail::create([
+                                    'order_id' => $order->id,
+                                    'product_id' => $product,
+                                    'quantity' => $qty,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }else{
+                foreach($orderDetails as $orderDetail){
+                    if(in_array($orderDetail->product_id, $productList)){
+                        foreach($productList as $productKey => $product){
+                            if($product == $orderDetail->product_id){
+                                foreach($itemsQty as $qtyKey =>  $qty){
+                                    if($productKey == $qtyKey){
+                                        $orderDetail->update([
+                                        'quantity' => $qty,
+                                        ]);
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        $orderDetail->delete();
+                    }
+                }
+            }
+
+            Session::flash('message', 'Update order successfully.');
+            Session::flash('class', 'bg-success');
+            return redirect()->back();
+        }
+
+        Session::flash('message', 'No selected products.');
+        Session::flash('class', 'bg-danger');
+        return redirect()->back();
     }
 
     /**
