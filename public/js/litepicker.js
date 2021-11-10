@@ -50,7 +50,8 @@ window.addEventListener('DOMContentLoaded', event => {
             numberOfMonths: 2,
             numberOfColumns: 2,
             format: 'MMM DD, YYYY',
-            plugins: ['ranges']
+            plugins: ['ranges'],
+            autoApply: false,
         });
     }
 });

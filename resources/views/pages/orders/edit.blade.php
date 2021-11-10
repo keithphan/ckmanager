@@ -24,11 +24,35 @@
             @method('PUT')
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    {{ __('Customer Information') }}
+                    {{ __('Order Information') }}
+                    <h4>
+                        @if ($order->status == 'waitting')
+                            <span class="badge bg-warning">{{ ucfirst($order->status) }}</span>
+                        @endif
+                        @if ($order->status == 'delivering')
+                            <span class="badge bg-info">{{ ucfirst($order->status) }}</span>
+                        @endif
+                        @if ($order->status == 'successful')
+                            <span class="badge bg-success">{{ ucfirst($order->status) }}</span>
+                        @endif
+                    </h4>
+                    
                     <div>
                         <a class="btn btn-primary btn-icon" href="{{ route('orders.index') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Back to all orders">
                             <i class="fas fa-chevron-left"></i>
                         </a>
+
+                        <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="Delete this order">
+                            <button class="btn btn-danger btn-icon delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-id={{ $order->id }}>
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+
+                        <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="Deliver this order" >
+                            <button class="btn btn-info btn-icon deliver" type="button" data-bs-toggle="modal" data-bs-target="#deliverOrder" data-id={{ $order->id }}>
+                                <i class="fas fa-truck"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">

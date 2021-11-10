@@ -28,18 +28,30 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
+const currentYear = new Date().getFullYear();
+
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+var annuallyRevenue = JSON.parse($.ajax({
+    url:  '/getAnnuallyRevenue',
+    dataType: "json", 
+    async: false,
+    data: {_token: CSRF_TOKEN},
+    type: "POST",
+}).responseText)
+
 // Bar Chart Example
 var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
     type: "bar",
     data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: [currentYear - 2, currentYear - 1, currentYear, currentYear + 1, currentYear + 2],
         datasets: [{
             label: "Revenue",
             backgroundColor: "rgba(0, 97, 242, 1)",
             hoverBackgroundColor: "rgba(0, 97, 242, 0.9)",
             borderColor: "#4e73df",
-            data: [4215, 5312, 6251, 7841, 9821, 14984],
+            data: annuallyRevenue,
             maxBarThickness: 25
         }]
     },
@@ -69,7 +81,6 @@ var myBarChart = new Chart(ctx, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 15000,
                     maxTicksLimit: 5,
                     padding: 10,
                     // Include a dollar sign in the ticks

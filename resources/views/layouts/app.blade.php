@@ -79,7 +79,7 @@
                             {{ route( Request::segment(2) . '.destroy', 'id') }}
                             @endif
                         @else
-                            @if(Request::segment(1) != 'dashboard')
+                            @if(Request::segment(1) != 'dashboard' && Request::segment(1) != 'revenue')
                                 {{ route( Request::segment(1) . '.destroy', 'id') }}
                             @endif
                         @endif
@@ -114,7 +114,7 @@
                             {{ route( Request::segment(2) . '.destroySelected') }}
                         @endif
                     @else
-                        @if(Request::segment(1) != 'dashboard')
+                        @if(Request::segment(1) != 'dashboard' && Request::segment(1) != 'revenue')
                             {{ route( Request::segment(1) . '.destroySelected') }}
                         @endif
                     @endif
@@ -128,23 +128,89 @@
         </div>
     </div>
 
+    <div class="modal fade" id="deliverOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ __('Deliver') }}</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ __('Deliver this order to:') }} <span id="shippingAddress"></span>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <form action="{{ route('orders.deliverOrder') }}" method="POST">
+                        @csrf
+                        <input id="orderId" type="text" hidden name="orderId" value="">
+                        <button class="btn btn-info" type="submit">{{ __('Confirm') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="finishOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ __('Finish order') }}</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ __('Do you want to finish this order') }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <form action="{{ route('orders.finishOrder') }}" method="POST">
+                        @csrf
+                        <input id="orderId2" type="text" hidden name="orderId" value="">
+                        <button class="btn btn-success" type="submit">{{ __('Yes') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="restoreOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ __('Restore order') }}</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ __('Do you want to restore this order') }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <form action="{{ route('orders.restoreOder') }}" method="POST">
+                        @csrf
+                        <input id="orderId3" type="text" hidden name="orderId" value="">
+                        <button class="btn btn-success" type="submit">{{ __('Yes') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/all.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="{{ asset('js/datatables/datatables-simple-demo.js') }}"></script>
-
-    @if (Request::segment(1) == 'dashboard')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-        <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
-    @endif
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/litepicker.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    @if (Request::segment(1) == 'dashboard')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
+        <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+    @endif
 </body>
 </html>

@@ -99,6 +99,23 @@ $(document).on('click','.delete',function(){
     $("#id").val(id);
 });
 
+$(document).on('click','.finish',function(){
+    let id = $(this).attr('data-id');
+    $("#orderId2").val(id);
+});
+
+$(document).on('click','.restore',function(){
+    let id = $(this).attr('data-id');
+    $("#orderId3").val(id);
+});
+
+$(document).on('click','.deliver',function(){
+    let id = $(this).attr('data-id');
+    let shippingAddress = $('#customerDeliverAddress').val();
+    $("#shippingAddress").text(shippingAddress);
+    $("#orderId").val(id);
+});
+
 $(document).on('click','#deleteItems',function(){
     $("#itemIds").val($("input.selectedItems:checked").map(function() { return this.value;}).get());
 });
@@ -222,12 +239,12 @@ $(function () {
                 data: {_token: CSRF_TOKEN, data: [customer_id, company_id]},
                 dataType: "json",
                 success: function (response) {
-                    let customer = response.customer[0];
+                    let customer = response.customer;
                     $("#customerName").val(customer.name);
                     $("#customerPhoneNumber").val(customer.phone_number);
                     $("#customerEmailAddress").val(customer.email);
-                    $("#customerDeliverAddress").val(response.deliverAddress.address);
-                    $("#filled_address").text(response.deliverAddress.address);
+                    $("#customerDeliverAddress").val(response.deliverAddress);
+                    $("#filled_address").text(response.deliverAddress);
                 }
             });
         }else{
@@ -237,6 +254,10 @@ $(function () {
             $("#customerDeliverAddress").val("");
             $("#filled_address").text("...");
         }
+    });
+
+    $(document).on("click", '.button-apply',function () {
+        
     });
 });
 

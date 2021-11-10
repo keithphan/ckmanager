@@ -106,20 +106,21 @@
                 <div class="card-body">
                     <div class="rows">
                         <label for="customerDeliverAddress">{{ __('Deliver address') }}</label>
-                        @foreach ($customer->deliverAddresses as $index => $address)
+
+                        @php
+                            $addressJson = json_decode($customer->addresses);
+                        @endphp
+                        @foreach ($addressJson->addresses as $index => $address)
                             <div class="row">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
-                                        <input type="radio" {{ $address->is_default ?  "checked" : "" }}  name="default" value="{{ $index }}">
+                                        <input type="radio" {{ $index == $addressJson->default ?  "checked" : "" }}  name="default" value="{{ $index }}">
                                     </span>
-                                    <input type="hidden" name="customerDeliverAddressIds[]" value="{{ $address->id }}">
-                                    <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address->address }}">
+                                    <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address }}">
                                 </div>
                             </div>
                         @endforeach
                     </div>
-
-
 
                     @error('customerDeliverAddress')
                         <span class="invalid-feedback d-block mb-2" role="alert">

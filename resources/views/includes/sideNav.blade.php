@@ -72,7 +72,13 @@
                         <a class="nav-link {{ Request::segment(1) == 'orders' && Request::has('trash') ? 'active' : '' }}" href="{{ route('orders.index', 'trash') }}">{{ __("Deleted Orders") }}</a>
                     </nav>
                 </div>
-
+                
+                <!-- Sidenav Heading (App Views)-->
+                <div class="sidenav-menu-heading">{{ __('Statistic') }}</div>
+                <a class="nav-link {{ Request::segment(1) == 'revenue' ? 'active' : '' }}" href="{{ route("revenue.index") }}">
+                    <div class="nav-link-icon"><i data-feather="dollar-sign"></i></div>
+                    {{ __('Revenue') }}
+                </a>
             </div>
         </div>
         <!-- Sidenav Footer-->

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Customer;
-use App\Models\DeliverAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -61,24 +60,23 @@ class CustomerController extends Controller
                 'customerDeliverAddresses.*' => 'deliver address',
             ],
         );
+        $addresses = $request->customerDeliverAddresses;
+        
+        $addressJson = [];
+        foreach($addresses as $address){
+            $addressJson['addresses'][] = $address; 
+        }
+        $addressJson['default'] = $request->default;
 
         $customer = Customer::create([
             'name' => $request->customerName,
             'phone_number' => $request->customerPhoneNumber,
             'email' => $request->customerEmailAddress,
+            'addresses' => json_encode($addressJson),
             'company_id' => $request->company_id,
             'user_id' => Auth::user()->id,
         ]);
-
-        $addresses = $request->customerDeliverAddresses;
-        for ($x = 0; $x < sizeof($addresses); $x++) {
-            DeliverAddress::create([
-                'customer_id' => $customer->id,
-                'address' => $addresses[$x],
-                'is_default' => $x == $request->default ? 1 : 0
-            ]);
-        }
-
+        
         Session::flash('message', 'Create customer successfully.');
         Session::flash('class', 'bg-success');
         return redirect()->back();
@@ -126,42 +124,30 @@ class CustomerController extends Controller
             ],
         );
 
+        // Return if there are more than 5 addresses
+        if(count($request->customerDeliverAddresses) > 5){
+            Session::flash('message', 'Only 5 addresses allowed!.');
+            Session::flash('class', 'bg-danger');
+            return redirect()->back();
+        }
+        // Update addresses
+        $addresses = $request->customerDeliverAddresses;
+        
+        $addressJson = [];
+        foreach($addresses as $address){
+            $addressJson['addresses'][] = $address; 
+        }
+        $addressJson['default'] = $request->default;
+        
         $customer = Customer::where('user_id', Auth::user()->id)->find($id);
 
         $customer->update([
             'name' => $request->customerName,
             'phone_number' => $request->customerPhoneNumber,
             'email' => $request->customerEmailAddress,
+            'addresses' => json_encode($addressJson),
             'company_id' => $request->company_id,
         ]);
-
-        // Return if there are more than 5 addresses
-        if(count($request->customerDeliverAddresses) > 5){
-            return redirect()->back();
-        }
-        // Update addresses
-        foreach($request->customerDeliverAddressIds as $idIndex => $id){
-            $deliverAddress = DeliverAddress::where('customer_id', $customer->id)->find($id);
-            foreach($request->customerDeliverAddresses as $addrIndex => $address){
-                if($idIndex == $addrIndex){
-                    $deliverAddress->update([
-                        'address' => $address,
-                        'is_default' => $addrIndex == $request->default ? 1 : 0,
-                    ]);
-                }
-            }
-        }
-
-        //Create new addresses
-        if(count($request->customerDeliverAddresses) > count($customer->deliverAddresses)){
-            for($x = count($customer->deliverAddresses); $x < sizeof($request->customerDeliverAddresses); $x++){
-                DeliverAddress::create([
-                    'customer_id' => $customer->id,
-                    'address' => $request->customerDeliverAddresses[$x],
-                    'is_default' => $x == $request->default ? 1 : 0
-                ]);
-            }
-        }
 
         Session::flash('message', 'Create customer successfully.');
         Session::flash('class', 'bg-success');
@@ -219,12 +205,16 @@ class CustomerController extends Controller
         $customer_id = $request->data[0];
         $company_id = $request->data[1];
 
-        $customer = Customer::select('id', 'name', 'phone_number', 'email')->where('company_id', $company_id)->find($customer_id)->get();
-        $deliverAddress = DeliverAddress::select('address')->where([
-            ['customer_id', $customer_id],
-            ['is_default', 1],
-        ])->get()->first();
+        $customer = Customer::select('id', 'name', 'phone_number', 'email', 'addresses')->where('company_id', $company_id)->find($customer_id);
 
+        $deliverAddress = "";
+        $addressJson = json_decode($customer->addresses);
+        foreach($addressJson->addresses as $index => $address){
+            if($index == $addressJson->default){
+                $deliverAddress = $address;
+            }
+        }
+        
         return json_encode(['customer' => $customer, 'deliverAddress' => $deliverAddress]);
     }
 }

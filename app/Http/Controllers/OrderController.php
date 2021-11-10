@@ -22,11 +22,11 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         if($request->has('trash')){
-            $orders = Order::where('user_id', Auth::user()->id)->onlyTrashed()->get();
+            $orders = Order::where('user_id', Auth::user()->id)->onlyTrashed()->orderBy('created_at', 'DESC')->get();
             return view('pages.orders.trash', compact('orders'));
         }
 
-        $orders = Order::where('user_id', Auth::user()->id)->get();
+        $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
         return view('pages.orders.index', compact('orders'));
     }
 
@@ -101,14 +101,12 @@ class OrderController extends Controller
                 'name' => $request->customerName,
                 'phone_number' => $request->customerPhoneNumber,
                 'email' => $request->customerEmailAddress,
+                'addresses' => json_encode([
+                    'addresses' => [$request->customerDeliverAddress],
+                    'default' => 0,
+                ]),
                 'company_id' => $request->company_id,
                 'user_id' => Auth::user()->id,
-            ]);
-
-            DeliverAddress::create([
-                'address' => $request->customerDeliverAddress,
-                'customer_id' => $customer->id,
-                'is_default' => 1,
             ]);
         }
 
@@ -184,7 +182,18 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = Order::where('user_id', Auth::user()->id)->withTrashed()->find($id);
+
+        if(!$order){
+            $this->isNotExisted();
+            return redirect()->back();
+        }
+
+        if($order->status == 'waitting'){
+            return redirect()->route('orders.edit', $order->id);
+        }
+        
+        return view('pages.orders.show', compact('order'));
     }
 
     /**
@@ -253,14 +262,12 @@ class OrderController extends Controller
                 'name' => $request->customerName,
                 'phone_number' => $request->customerPhoneNumber,
                 'email' => $request->customerEmailAddress,
+                'addresses' => json_encode([
+                    'addresses' => [$request->customerDeliverAddress],
+                    'default' => 0,
+                ]),
                 'company_id' => $request->company_id,
                 'user_id' => Auth::user()->id,
-            ]);
-
-            DeliverAddress::create([
-                'address' => $request->customerDeliverAddress,
-                'customer_id' => $customer->id,
-                'is_default' => 1,
             ]);
         }
 
@@ -383,7 +390,7 @@ class OrderController extends Controller
             $this->isNotExisted();
         }
 
-        return redirect()->back();
+        return redirect()->route('orders.index');
     }
 
     public function destroySelected(Request $request)
@@ -425,5 +432,64 @@ class OrderController extends Controller
     public function isNotExisted(){
         Session::flash('message', 'Order does not exist!');
         Session::flash('class', 'bg-warning');
+    }
+
+    public function deliverOrder(Request $request){
+        $order = Order::where('user_id', Auth::user()->id)->find($request->orderId);
+
+        if(!$order){
+            $this->isNotExisted();
+            return redirect()->back();
+        }
+
+        $order->update([
+            'status' => 'delivering',
+        ]);
+
+        foreach($order->orderDetails as $orderDetail){
+            $orderDetail->product->update([
+                'quantity' => $orderDetail->product->quantity - $orderDetail->quantity,
+            ]);
+        }
+
+        Session::flash('message', 'Order is being delivered');
+        Session::flash('class', 'bg-info');
+        return redirect()->route('orders.show', $order->id);
+    }
+
+
+    public function finishOrder(Request $request){
+        $order = Order::where([
+            ['status', 'delivering'],
+            ['user_id', Auth::user()->id]
+        ])->find($request->orderId);
+
+        if(!$order){
+            $this->isNotExisted();
+            return redirect()->back();
+        }
+
+        $order->update([
+            'status' => 'successful',
+        ]);
+
+        Session::flash('message', 'Finish order successfully!');
+        Session::flash('class', 'bg-success');
+        return redirect()->back();
+    }
+
+    public function restoreOder(Request $request){
+        $order = Order::where('user_id', Auth::user()->id)->onlyTrashed()->find($request->orderId);
+
+        if(!$order){
+            $this->isNotExisted();
+            return redirect()->back();
+        }
+
+        $order->restore();
+
+        Session::flash('message', 'Restore order successfully!');
+        Session::flash('class', 'bg-success');
+        return redirect()->back();
     }
 }

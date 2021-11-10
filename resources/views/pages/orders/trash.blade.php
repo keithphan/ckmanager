@@ -39,6 +39,7 @@
                                 <input type="checkbox" id="selectAll" data-bs-toggle="tooltip" data-bs-placement="left" title="Select all">
                             </th>
                             <th>Customer name</th>
+                            <th>Company</th>
                             <th>Total (Shipping fee included)</th>
                             <th data-sortable="false" width="50px" >Status</th>
                             <th width="180px">Date</th>
@@ -49,6 +50,7 @@
                         <tr>
                             <th></th>
                             <th>Customer name</th>
+                            <th>Company</th>
                             <th>Total (Shipping fee included)</th>
                             <th>Status</th>
                             <th>Date</th>
@@ -62,6 +64,7 @@
                                 <input class="selectedItems" type="checkbox" name="selectedItems[]" value="{{ $order->id }}">
                             </td>
                             <td>{{ $order->customer->name }}</td>
+                            <td>{{ $order->customer->company->name }}</td>
                             <td>${{ ($order->total + $order->shipping_fee) /100 }}</td>
                             <td>
                                 @if ($order->deleted_at)
@@ -80,7 +83,7 @@
                             </td>
                             <td>{{ $order->created_at }}</td>
                             <td style="text-align: center">
-                                <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('orders.show', $order->id) }}"><i class="far fa-edit"></i></a>
+                                <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('orders.show', $order->id) }}"><i class="far fa-eye"></i></a>
                                 {{-- <button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button> --}}
                                 <button class="btn btn-datatable btn-icon btn-transparent-dark delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-id={{ $order->id }}>
                                   @if ($order->deleted_at)

@@ -28,6 +28,17 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+var monthlyRevenue = JSON.parse($.ajax({
+    url:  '/getMonthlyRevenue',
+    dataType: "json", 
+    async: false,
+    data: {_token: CSRF_TOKEN},
+    type: "POST",
+}).responseText)
+
+
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
@@ -48,7 +59,7 @@ var myLineChart = new Chart(ctx, {
             "Dec"
         ],
         datasets: [{
-            label: "Earnings",
+            label: "Revenue",
             lineTension: 0.3,
             backgroundColor: "rgba(0, 97, 242, 0.05)",
             borderColor: "rgba(0, 97, 242, 1)",
@@ -60,20 +71,7 @@ var myLineChart = new Chart(ctx, {
             pointHoverBorderColor: "rgba(0, 97, 242, 1)",
             pointHitRadius: 10,
             pointBorderWidth: 2,
-            data: [
-                0,
-                10000,
-                5000,
-                15000,
-                10000,
-                20000,
-                15000,
-                25000,
-                20000,
-                30000,
-                25000,
-                40000
-            ]
+            data: monthlyRevenue
         }]
     },
     options: {

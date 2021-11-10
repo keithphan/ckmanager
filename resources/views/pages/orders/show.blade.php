@@ -28,6 +28,34 @@
                         <a class="btn btn-primary btn-icon" href="{{ route('orders.index') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Back to all orders">
                             <i class="fas fa-chevron-left"></i>
                         </a>
+
+                        <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ __($order->deleted_at ? "Remove" : "Delete") }} this order">
+                            <button class="btn btn-danger btn-icon delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-id={{ $order->id }}>
+                                @if ($order->deleted_at)
+                                    <i class="fas fa-ban"></i>
+                                @else
+                                    <i class="fas fa-trash-alt"></i>
+                                @endif
+                                
+                            </button>
+                        </div>
+
+                        @if ($order->deleted_at)
+                            <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="Restore this order" >
+                                <button class="btn btn-success btn-icon restore" type="button" data-bs-toggle="modal" data-bs-target="#restoreOrder" data-id={{ $order->id }}>
+                                    <i class="fas fa-undo-alt"></i>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if ($order->status != 'successful' && $order->deleted_at == null)
+                            <div style="display: inline-block;" data-bs-toggle="tooltip" data-bs-placement="left" title="Finish this order" >
+                                <button class="btn btn-success btn-icon finish" type="button" data-bs-toggle="modal" data-bs-target="#finishOrder" data-id={{ $order->id }}>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        @endif
+                        
                     </div>
                 </div>
                 <div class="card-body">
@@ -157,9 +185,9 @@
                                 <label for="description">{{ __('Description') }}</label>
                                 <textarea class="form-control" rows="6" id="description" type="text" name="description" readonly>{{ $order->description }}</textarea>
                             </div>
-                            <div class="mb-3 d-flex justify-content-end">
+                            {{-- <div class="mb-3 d-flex justify-content-end">
                                 <button class="btn btn-danger delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-id={{ $order->id }}>{{ __($order->deleted_at ? "Remove" : "Delete") }}</button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
