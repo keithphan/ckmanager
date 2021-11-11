@@ -42,7 +42,7 @@
                             <tr>
                                 <td>{{ $company->name }}</td>
                                 <td style="text-align: center">
-                                    <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('revenue.company', $company->slug) }}"><i class="fas fa-arrow-right"></i></a>
+                                    <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="{{ route('revenue.company', [$company->slug, 'startDate' => Carbon\Carbon::now()->format('Y-m-d'), 'endDate' => Carbon\Carbon::now()->format('Y-m-d')]) }}"><i class="fas fa-arrow-right"></i></a>
                                 </td>
                             </tr>
                         @endforeach

@@ -16,9 +16,8 @@ class DashboardController extends Controller
 
     public function index(){
         $orders = Order::where([
-            ['status', 'waitting'],
             ['user_id', Auth::user()->id]
-        ])->take(7)->orderBy('created_at', 'DESC')->get();
+        ])->take(10)->orderBy('updated_at', 'DESC')->get();
 
         $currentYear = Carbon::now()->year;
         $earnings = Order::where([

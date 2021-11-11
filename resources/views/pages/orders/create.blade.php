@@ -145,7 +145,7 @@
                                         <td>{{ $product->category->name }}</td>
                                         <td>AU ${{ $product->price  / 100 }}</td>
                                         <td>{{ $product->quantity }}</td>
-                                        <td><input class="form-control itemsQty" type="number" name="itemsQty[]" product-id="{{ $product->id }}" value="1" min="1"></td>
+                                        <td><input class="form-control itemsQty" type="number" name="itemsQty[]" product-id="{{ $product->id }}" value="1" min="1" max="{{ $product->quantity }}"></td>
                                     </tr>
                                 @endforeach
                             </tbody>

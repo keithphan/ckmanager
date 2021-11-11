@@ -40,16 +40,18 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+
+    const urlParams = new URLSearchParams(window.location.search);
     const litepickerRangePlugin = document.getElementById('litepickerRangePlugin');
     if (litepickerRangePlugin) {
         new Litepicker({
             element: litepickerRangePlugin,
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: urlParams.get('startDate'),
+            endDate: urlParams.get('endDate'),
             singleMode: false,
             numberOfMonths: 2,
             numberOfColumns: 2,
-            format: 'MMM DD, YYYY',
+            format: 'YYYY/MM/DD',
             plugins: ['ranges'],
             autoApply: false,
         });

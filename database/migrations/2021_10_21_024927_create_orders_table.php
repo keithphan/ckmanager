@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('total');
             $table->string('status');
             $table->string('description')->nullable();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

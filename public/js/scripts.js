@@ -257,7 +257,9 @@ $(function () {
     });
 
     $(document).on("click", '.button-apply',function () {
-        
+        var dateString = $('#litepickerRangePlugin').val();
+        var date = dateString.split('-');
+        window.location.href = '/revenue/eflux?startDate=' + date[0].replaceAll('/', '-').trim() + "&endDate=" + date[1].replaceAll('/', '-').trim();
     });
 });
 

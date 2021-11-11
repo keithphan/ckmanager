@@ -65,4 +65,5 @@ Route::group(['middleware' => ['auth']], function(){
     //Revenue Routes
     Route::get('revenue', [RevenueController::class, 'index'])->name('revenue.index');
     Route::get('revenue/{companySlug}', [RevenueController::class, 'revenue'])->name('revenue.company');
+    Route::post('getDateRevenueByDateRange', [RevenueController::class, 'getDateRevenueByDateRange']); // Ajax call
 });

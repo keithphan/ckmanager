@@ -44,7 +44,7 @@
             <div class="col-xxl-4 col-xl-6 mb-4">
                 <div class="card card-header-actions h-100">
                     <div class="card-header">
-                        New orders
+                        Orders Status
                         {{-- <div class="dropdown no-caret">
                             <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
                             <div class="dropdown-menu dropdown-menu-end animated--fade-in-up" aria-labelledby="dropdownMenuButton">
@@ -59,17 +59,46 @@
                     <div class="card-body">
                         <div class="timeline timeline-xs">
                             @foreach ($orders as $order)
-                                <div class="timeline-item">
-                                    <div class="timeline-item-marker">
-                                        <div class="timeline-item-marker-text">{{ $order->created_at->diffForHumans(null, false, true) }}</div>
-                                        <div class="timeline-item-marker-indicator bg-green"></div>
+                                @if ($order->status == 'waitting')
+                                    <div class="timeline-item">
+                                        <div class="timeline-item-marker">
+                                            <div class="timeline-item-marker-text">{{ $order->created_at->diffForHumans(null, false, true) }}</div>
+                                            <div class="timeline-item-marker-indicator bg-yellow"></div>
+                                        </div>
+                                        <div class="timeline-item-content">
+                                            New order placed!
+                                            <a class="fw-bold text-dark" href="{{ route("orders.show", $order->id) }}">Order #{{ $order->id }}</a>
+                                            has been successfully placed.
+                                        </div>
                                     </div>
-                                    <div class="timeline-item-content">
-                                        New order placed!
-                                        <a class="fw-bold text-dark" href="{{ route("orders.show", $order->id) }}">Order #{{ $order->id }}</a>
-                                        has been successfully placed.
+                                @endif
+
+                                @if ($order->status == 'delivering')
+                                    <div class="timeline-item">
+                                        <div class="timeline-item-marker">
+                                            <div class="timeline-item-marker-text">{{ $order->created_at->diffForHumans(null, false, true) }}</div>
+                                            <div class="timeline-item-marker-indicator bg-info"></div>
+                                        </div>
+                                        <div class="timeline-item-content">
+                                            <a class="fw-bold text-dark" href="{{ route("orders.show", $order->id) }}">Order #{{ $order->id }}</a>
+                                            is being delivered.
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
+                                @if ($order->status == 'successful')
+                                    <div class="timeline-item">
+                                        <div class="timeline-item-marker">
+                                            <div class="timeline-item-marker-text">{{ $order->created_at->diffForHumans(null, false, true) }}</div>
+                                            <div class="timeline-item-marker-indicator bg-green"></div>
+                                        </div>
+                                        <div class="timeline-item-content">
+                                            <a class="fw-bold text-dark" href="{{ route("orders.show", $order->id) }}">Order #{{ $order->id }}</a>
+                                            has been successfully delivered.
+                                        </div>
+                                    </div>
+                                @endif
+                                
                             @endforeach 
                         </div>
                     </div>
@@ -78,7 +107,7 @@
             <div class="col-xxl-4 col-xl-6 mb-4">
                 <div class="card card-header-actions h-100">
                     <div class="card-header">
-                        Progress Tracker
+                        Comming soon feature
                         {{-- <div class="dropdown no-caret">
                             <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
                             <div class="dropdown-menu dropdown-menu-end animated--fade-in-up" aria-labelledby="dropdownMenuButton">
@@ -98,7 +127,7 @@
                         </div> --}}
                     </div>
                     <div class="card-body">
-                        <h4 class="small">
+                        {{-- <h4 class="small">
                             Server Migration
                             <span class="float-end fw-bold">20%</span>
                         </h4>
@@ -122,14 +151,14 @@
                             Account Setup
                             <span class="float-end fw-bold">Complete!</span>
                         </h4>
-                        <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>
+                        <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div> --}}
                     </div>
-                    <div class="card-footer position-relative">
+                    {{-- <div class="card-footer position-relative">
                         <div class="d-flex align-items-center justify-content-between small text-body">
                             <a class="stretched-link text-body" href="#!">Visit Task Center</a>
                             <i class="fas fa-angle-right"></i>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

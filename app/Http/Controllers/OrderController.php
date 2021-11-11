@@ -97,7 +97,7 @@ class OrderController extends Controller
                 ],
             );
 
-            $customer = Customer::create([
+            $customer = new Customer([
                 'name' => $request->customerName,
                 'phone_number' => $request->customerPhoneNumber,
                 'email' => $request->customerEmailAddress,
@@ -130,13 +130,18 @@ class OrderController extends Controller
                 foreach($itemsQty as $qtyKey =>  $qty){
                     if($productKey == $qtyKey){
                         $productFormDb = Product::find($product);
-                        $total += $productFormDb->price * $qty;
-                        // $productFormDb->update([
-                        //     'quantity' => $productFormDb->quantity - $qty,
-                        // ]);
+                        if($qty <= $productFormDb->quantity){
+                            $total += $productFormDb->price * $qty;
+                        }else{
+                            Session::flash('message', 'Invalid quantity.');
+                            Session::flash('class', 'bg-warning');
+                            return redirect()->back();
+                        }
                     }
                 }
             }
+
+            $customer->save();
 
             $order = Order::create([
                 'customer_id' => $customer->id,
@@ -148,6 +153,7 @@ class OrderController extends Controller
                 'payment_method' => $request->payment_method,
                 'total' => $total,
                 'description' => $request->description,
+                'company_id' => $request->company_id,
                 'user_id' => Auth::user()->id,
                 'status' => 'waitting',
             ]);
@@ -292,9 +298,6 @@ class OrderController extends Controller
                     if($productKey == $qtyKey){
                         $productFormDb = Product::find($product);
                         $total += $productFormDb->price * $qty;
-                        // $productFormDb->update([
-                        //     'quantity' => $productFormDb->quantity - $qty,
-                        // ]);
                     }
                 }
             }
