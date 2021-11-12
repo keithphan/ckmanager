@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -67,6 +68,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(count($request->variant_name));
         $request->validate(
             [
                 'name' => 'required',
@@ -91,6 +93,25 @@ class ProductController extends Controller
             'user_id' => Auth::user()->id,
             'company_id' => $request->company_id,
         ]);
+
+        if(count($request->variant_name) > 5){
+            Session::flash('message', 'Only 5 variants allowed');
+            Session::flash('class', 'bg-warning');
+
+            return redirect()->back();
+        }
+
+        for($i = 0; $i < count($request->variant_name); $i++){
+            if($request->variant_name[$i] != ''){
+                $variant = Variant::create([
+                    'name' => $request->variant_name[$i],
+                    'price' => ($request->variant_price[$i]  * 100),
+                    'quantity' => $request->variant_quantity[$i],
+                    'gallery' => $request->variant_gallery[$i],
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
 
         Session::flash('message', 'Create product successfully.');
         Session::flash('class', 'bg-success');
@@ -170,6 +191,32 @@ class ProductController extends Controller
             'user_id' => Auth::user()->id,
             'company_id' => $request->company_id,
         ]);
+
+        // Update and add
+        for($i = 0; $i < count($request->variant_name); $i++){
+            if($request->variant_name[$i] != ''){
+                if(!empty($product->variants[$i])){
+                    $product->variants[$i]->update([
+                        'name' => $request->variant_name[$i],
+                        'price' => ($request->variant_price[$i]  * 100),
+                        'quantity' => $request->variant_quantity[$i],
+                        'gallery' => $request->variant_gallery[$i],
+                    ]);
+                }else{
+                    Variant::create([
+                        'name' => $request->variant_name[$i],
+                        'price' => ($request->variant_price[$i]  * 100),
+                        'quantity' => $request->variant_quantity[$i],
+                        'gallery' => $request->variant_gallery[$i],
+                        'product_id' => $product->id,
+                    ]);
+                }
+            }else{
+                // if(!empty($product->variants->first())){
+                    $product->variants[$i]->delete();
+                // }
+            }
+        }
 
         Session::flash('message', 'Update product successfully.');
         Session::flash('class', 'bg-success');

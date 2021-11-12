@@ -33,7 +33,7 @@
                             <div class="col-xl-8 col-xxl-12">
                                 <div class="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
                                     <h1 class="text-primary">Welcome to CkManager!</h1>
-                                    <p class="text-gray-700 mb-0">Browse our fully designed UI toolkit! Browse our prebuilt app pages, components, and utilites, and be sure to look at our full documentation!</p>
+                                    <p class="text-gray-700 mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas egestas quam ac egestas. Nam laoreet laoreet lorem, ac eleifend dui. Pellentesque sem est, ultricies.</p>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-xxl-12 text-center"><img class="img-fluid" src="assets/img/illustrations/at-work.svg" style="max-width: 26rem" /></div>
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-between small">
-                        <a class="text-white stretched-link" href="#!">View</a>
+                        <a class="text-white stretched-link" href="{{ route('revenue.index') }}">View</a>
                         <div class="text-white"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-between small">
-                        <a class="text-white stretched-link" href="#!">View</a>
+                        <a class="text-white stretched-link" href="{{ route('revenue.index') }}">View</a>
                         <div class="text-white"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>

@@ -160,7 +160,7 @@
                                 <label for="price">Price<span class="required-input">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-text">$</div>
-                                    <input class="form-control @error('price') is-invalid @enderror" id="price" type="number" name="price" step="any" value="{{ old('price') / 100 }}">
+                                    <input class="form-control @error('price') is-invalid @enderror" id="price" type="number" name="price" step="any" min="0" value="{{ old('price') / 100 }}">
                                 </div>
                                 @error('price')
                                     <span class="invalid-feedback" role="alert">
@@ -172,7 +172,7 @@
                                 <label for="original_price">Original Price</label>
                                 <div class="input-group">
                                     <div class="input-group-text">$</div>
-                                    <input class="form-control @error('original_price') is-invalid @enderror" id="original_price" type="number" name="original_price" step="any" value="{{ old('original_price') / 100 }}">
+                                    <input class="form-control @error('original_price') is-invalid @enderror" id="original_price" type="number" name="original_price" min="0" step="any" value="{{ old('original_price') / 100 }}">
                                 </div>
                                 @error('original_price')
                                     <span class="invalid-feedback" role="alert">
@@ -180,9 +180,65 @@
                                     </span>
                                 @enderror
                             </div>
+                            
                         </div>
                         <div class="col-3"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    {{ __('Variants') }}
+
+                    <div>
+                        <button id="addVariant" type="button" class="btn btn-primary btn-icon" data-bs-toggle="tooltip" data-bs-placement="left" title="Add a variant">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="variant-wrapper">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="mb-3">
+                                    <label for="variant_name">Name</label>
+                                    <input class="form-control" id="variant_name" type="text" name="variant_name[]" value="">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3">
+                                    <label for="variant_price">Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-text">$</div>
+                                        <input class="form-control" id="variant_price" type="number" name="variant_price[]" step="any" min="0" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="mb-3">
+                                    <label for="variant_quantity">Quantity</label>
+                                    <input class="form-control" id="variant_quantity" type="number" name="variant_quantity[]" step="any" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="mb-3">
+                                    <label for="variant_gallery">Image</label>
+                                        <div class="input-group">
+                                            <input class="form-control" id="variant_gallery" type="text" name="variant_gallery[]">
+                                            <a id="variant_gallery_button-1" data-input="variant_gallery" data-preview="variant-gallery-holder-1" class="btn btn-primary">
+                                                Choose
+                                            </a>
+                                        </div>
+                                        <div id="variant-gallery-holder-1" style="margin-top:15px;margin-bottom:15px;max-height:200px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    {{ __('* Leave the name as a blank to delete') }}
                 </div>
             </div>
 

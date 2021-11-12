@@ -204,6 +204,101 @@
 
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
+                    {{ __('Variants') }}
+                    <div>
+                        <button id="addVariant" type="button" class="btn btn-primary btn-icon" data-bs-toggle="tooltip" data-bs-placement="left" title="Add a variant">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="variant-wrapper">
+                        @empty($product->variants->first())
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="mb-3">
+                                        <label for="variant_name">Name</label>
+                                        <input class="form-control" id="variant_name" type="text" name="variant_name[]" value="">
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3">
+                                        <label for="variant_price">Price</label>
+                                        <div class="input-group">
+                                            <div class="input-group-text">$</div>
+                                            <input class="form-control" id="variant_price" type="number" name="variant_price[]" step="any" min="0" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="mb-3">
+                                        <label for="variant_quantity">Quantity</label>
+                                        <input class="form-control" id="variant_quantity" type="number" name="variant_quantity[]" step="any" min="0" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <div class="mb-3">
+                                        <label for="variant_gallery">Image</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="variant_gallery" type="text" name="variant_gallery[]">
+                                                <a id="variant_gallery_button-1" data-input="variant_gallery" data-preview="variant-gallery-holder-1" class="btn btn-primary">
+                                                    Choose
+                                                </a>
+                                            </div>
+                                            <div id="variant-gallery-holder-1" style="margin-top:15px;margin-bottom:15px;max-height:200px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endempty
+                        @foreach ($product->variants as $key => $variant)
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="mb-3">
+                                        <label for="variant_name">Name</label>
+                                        <input hidden name="variant_ids[]" value="{{ $variant->id }}">
+                                        <input class="form-control" id="variant_name" type="text" name="variant_name[]" value="{{ $variant->name }}">
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3">
+                                        <label for="variant_price">Price</label>
+                                        <div class="input-group">
+                                            <div class="input-group-text">$</div>
+                                            <input class="form-control" id="variant_price" type="number" name="variant_price[]" step="any" min="0" value="{{ $variant->price / 100 }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="mb-3">
+                                        <label for="variant_quantity">Quantity</label>
+                                        <input class="form-control" id="variant_quantity" type="number" name="variant_quantity[]" step="any" min="0" value="{{ $variant->quantity }}">
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <div class="mb-3">
+                                        <label for="variant_gallery">Image</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="variant_gallery-{{ $key + 1 }}" type="text" name="variant_gallery[]" value="{{ $variant->gallery }}">
+                                                <a id="variant_gallery_button-{{ $key + 1 }}" data-input="variant_gallery-{{ $key + 1 }}" data-preview="variant-gallery-holder-{{ $key + 1 }}" class="btn btn-primary">
+                                                    Choose
+                                                </a>
+                                            </div>
+                                            <div id="variant-gallery-holder-{{ $key + 1 }}" style="margin-top:15px;margin-bottom:15px;max-height:200px;">
+                                                <img src="{{ $variant->gallery }}" style="height: 5rem;">
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach 
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    {{ __('* Leave the name as a blank to delete') }}
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     {{ __('Description') }}
                 </div>
                 <div class="card-body">
