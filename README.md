@@ -17,7 +17,7 @@ CkManager provides many APIs to front-end websites for using:
 
 ## Running CkManager
 
-After cloning from github, do the following steps:
+After cloning from github, set up the .env file then do the following steps:
 
 ```bash
 composer install
