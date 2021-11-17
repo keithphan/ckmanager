@@ -94,24 +94,24 @@ class ProductController extends Controller
             'company_id' => $request->company_id,
         ]);
 
-        if(count($request->variant_name) > 5){
-            Session::flash('message', 'Only 5 variants allowed');
-            Session::flash('class', 'bg-warning');
+        // if(count($request->variant_name) > 5){
+        //     Session::flash('message', 'Only 5 variants allowed');
+        //     Session::flash('class', 'bg-warning');
 
-            return redirect()->back();
-        }
+        //     return redirect()->back();
+        // }
 
-        for($i = 0; $i < count($request->variant_name); $i++){
-            if($request->variant_name[$i] != ''){
-                $variant = Variant::create([
-                    'name' => $request->variant_name[$i],
-                    'price' => ($request->variant_price[$i]  * 100),
-                    'quantity' => $request->variant_quantity[$i],
-                    'gallery' => $request->variant_gallery[$i],
-                    'product_id' => $product->id,
-                ]);
-            }
-        }
+        // for($i = 0; $i < count($request->variant_name); $i++){
+        //     if($request->variant_name[$i] != ''){
+        //         $variant = Variant::create([
+        //             'name' => $request->variant_name[$i],
+        //             'price' => ($request->variant_price[$i]  * 100),
+        //             'quantity' => $request->variant_quantity[$i],
+        //             'gallery' => $request->variant_gallery[$i],
+        //             'product_id' => $product->id,
+        //         ]);
+        //     }
+        // }
 
         Session::flash('message', 'Create product successfully.');
         Session::flash('class', 'bg-success');
@@ -193,30 +193,30 @@ class ProductController extends Controller
         ]);
 
         // Update and add
-        for($i = 0; $i < count($request->variant_name); $i++){
-            if($request->variant_name[$i] != ''){
-                if(!empty($product->variants[$i])){
-                    $product->variants[$i]->update([
-                        'name' => $request->variant_name[$i],
-                        'price' => ($request->variant_price[$i]  * 100),
-                        'quantity' => $request->variant_quantity[$i],
-                        'gallery' => $request->variant_gallery[$i],
-                    ]);
-                }else{
-                    Variant::create([
-                        'name' => $request->variant_name[$i],
-                        'price' => ($request->variant_price[$i]  * 100),
-                        'quantity' => $request->variant_quantity[$i],
-                        'gallery' => $request->variant_gallery[$i],
-                        'product_id' => $product->id,
-                    ]);
-                }
-            }else{
-                // if(!empty($product->variants->first())){
-                    $product->variants[$i]->delete();
-                // }
-            }
-        }
+        // for($i = 0; $i < count($request->variant_name); $i++){
+        //     if($request->variant_name[$i] != ''){
+        //         if(!empty($product->variants[$i])){
+        //             $product->variants[$i]->update([
+        //                 'name' => $request->variant_name[$i],
+        //                 'price' => ($request->variant_price[$i]  * 100),
+        //                 'quantity' => $request->variant_quantity[$i],
+        //                 'gallery' => $request->variant_gallery[$i],
+        //             ]);
+        //         }else{
+        //             Variant::create([
+        //                 'name' => $request->variant_name[$i],
+        //                 'price' => ($request->variant_price[$i]  * 100),
+        //                 'quantity' => $request->variant_quantity[$i],
+        //                 'gallery' => $request->variant_gallery[$i],
+        //                 'product_id' => $product->id,
+        //             ]);
+        //         }
+        //     }else{
+        //         // if(!empty($product->variants->first())){
+        //             $product->variants[$i]->delete();
+        //         // }
+        //     }
+        // }
 
         Session::flash('message', 'Update product successfully.');
         Session::flash('class', 'bg-success');
