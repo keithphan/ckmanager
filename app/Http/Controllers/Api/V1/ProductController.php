@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function getProductsByCompanyAndCategory($companyId, $category){
-        $com = Company::find($companyId);
-        $cate = Category::where('slug', $category)->first();
+    public function getProductsByCompanyAndCategory(Request $request){
+        $com = Company::find($request->companyId);
+        $cate = Category::where('slug', $request->category)->first();
 
         $descendants  = Category::descendantsOf($cate->id);
 
@@ -31,16 +31,16 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function getOnSaleProducts($companyId){
-        $com = Company::find($companyId);
+    public function getOnSaleProducts(Request $request){
+        $com = Company::find($request->companyId);
         $products = Product::where([['company_id', $com->id], ['original_price', '>', 0]])->get();
 
         return ProductResource::collection($products);
     }
 
-    public function getProductByCompanyAndCategory($companyId, $productId){
-        $com = Company::find($companyId);
-        $product = Product::where([['company_id', $com->id]])->find($productId);
+    public function getProductByCompanyAndCategory(Request $request){
+        $com = Company::find($request->companyId);
+        $product = Product::where([['company_id', $com->id]])->find($request->productId);
 
         return new ProductResource($product);
     }

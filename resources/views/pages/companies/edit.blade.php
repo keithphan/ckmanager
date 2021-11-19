@@ -55,7 +55,7 @@
                         </div>
                         <div id="holder" style="margin-top:15px;margin-bottom:15px;max-height:200px;">
                             @if ($company->logo)
-                                <img src="{{ $company->logo }}" style="height: 5rem;">
+                                <img src="{{ str_replace(' ', '%20', trim($company->logo)) }}" style="height: 5rem;">
                             @endif
                         </div>
                     </div>

@@ -76,7 +76,7 @@
                                 @enderror
                             </div>
                             <div id="holder" style="margin-top:15px;margin-bottom:15px;max-height:200px;">
-                                <img src={{ $product->thumbnail }} style="height: 5rem;">
+                                <img src={{ str_replace(' ', '%20', trim($product->thumbnail)) }} style="height: 5rem;">
                             </div>
                         </div>
 
@@ -112,7 +112,7 @@
                                         </div>
                                         <div id="holder-{{ $number }}" style="margin-top:15px;margin-bottom:15px;max-height:200px;">
                                             @if ($image)
-                                                <img src={{ $image }} style="height: 5rem;">
+                                                <img src={{ str_replace(' ', '%20', trim($image) )  }} style="height: 5rem;">
                                             @endif
                                         </div>
                                     </div>
