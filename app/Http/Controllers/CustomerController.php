@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
@@ -48,7 +49,7 @@ class CustomerController extends Controller
         $request->validate(
             [
                 'customerName' => 'required',
-                'customerPhoneNumber' => 'required|numeric',
+                // 'customerPhoneNumber' => 'required|numeric',
                 'customerEmailAddress' => 'required',
                 'customerDeliverAddresses' => 'required|array',
                 'customerDeliverAddresses.*' => 'required',
@@ -73,6 +74,7 @@ class CustomerController extends Controller
             'phone_number' => $request->customerPhoneNumber,
             'email' => $request->customerEmailAddress,
             'addresses' => json_encode($addressJson),
+            'password' => Hash::make('123456789'),
             'company_id' => $request->company_id,
             'user_id' => Auth::user()->id,
         ]);
@@ -118,7 +120,7 @@ class CustomerController extends Controller
         $request->validate(
             [
                 'customerName' => 'required',
-                'customerPhoneNumber' => 'required',
+                // 'customerPhoneNumber' => 'required',
                 'customerEmailAddress' => 'required',
                 'customerDeliverAddresses' => 'required',
             ],
@@ -135,7 +137,8 @@ class CustomerController extends Controller
         
         $addressJson = [];
         foreach($addresses as $address){
-            $addressJson['addresses'][] = $address; 
+            if($address)
+                $addressJson['addresses'][] = $address; 
         }
         $addressJson['default'] = $request->default;
         

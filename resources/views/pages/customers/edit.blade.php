@@ -106,20 +106,29 @@
                 <div class="card-body">
                     <div class="rows">
                         <label for="customerDeliverAddress">{{ __('Deliver address') }}</label>
-
-                        @php
-                            $addressJson = json_decode($customer->addresses);
-                        @endphp
-                        @foreach ($addressJson->addresses as $index => $address)
+                        @if ($customer->addresses)
+                            @php
+                                $addressJson = json_decode($customer->addresses);
+                            @endphp
+                            @foreach ($addressJson->addresses as $index => $address)
+                                <div class="row">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
+                                            <input type="radio" {{ $index == $addressJson->default ?  "checked" : "" }}  name="default" value="{{ $index }}">
+                                        </span>
+                                        <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        
+                        @else  
                             <div class="row">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
-                                        <input type="radio" {{ $index == $addressJson->default ?  "checked" : "" }}  name="default" value="{{ $index }}">
-                                    </span>
-                                    <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address }}">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default"><input type="radio" checked name="default" value="0"></span>
+                                    <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]">
                                 </div>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
 
                     @error('customerDeliverAddress')

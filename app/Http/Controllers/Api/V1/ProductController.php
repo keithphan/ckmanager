@@ -44,4 +44,8 @@ class ProductController extends Controller
 
         return new ProductResource($product);
     }
+
+    public function test(){
+        return 'Hello';
+    }
 }
