@@ -183,6 +183,15 @@ $(function () {
         // allowClear: true,
     });
 
+    for(var i = 0; i < rowNumber; i++){
+        $('#state-select-' + i).select2({
+            theme: 'bootstrap-5',
+            minimumResultsForSearch: -1
+            // allowClear: true,
+        });
+    }
+    
+
     $(document).on("click", "#btnImgAdd", function () {
         var number = $(".rows").children().length;
         var ele = $("<div class='row'></div>").html("<div class='col-12'><div class='mb-3'><div class='input-group'><input id='gallery-" + (number + 1) + "' class='form-control' type='text' name='gallery[]'><a id='lfm-" + (number + 1) + "' data-input='gallery-" + (number + 1) + "' data-preview='holder-" + (number + 1) + "' class='btn btn-primary'>Choose</a></div><div id='holder-" + (number + 1) + "' style='margin-top:15px;margin-bottom:15px;max-height:200px;'></div></div></div>");
@@ -206,9 +215,45 @@ $(function () {
 
     $(document).on("click", "#btnAddressAdd", function () {
         var number = $(".rows").children().length;
-        if(number <= 5){
-            var ele = $("<div class='row'></div>").html("<div class='input-group mb-3'><span class='input-group-text' data-bs-toggle='tooltip' data-bs-placement='left' title='Set as default'><input type='radio' name='default' value=" + (number - 1) + "></span><input class='form-control' id='customerDeliverAddress' type='text' name='customerDeliverAddresses[]'></div>");
+        if(number < 5){
+            var ele = $("<div class='row'></div>").html(`
+            <div class="col-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default"><input type="radio" name="default" value="${number}"></span>
+                    <input class="form-control" id="customerDeliverAddress" type="text" name="deliverAddresses[]" placeholder="Address">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <input class="form-control" id="suburb" type="text" name="suburbs[]" placeholder="City / Suburb">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="input-group mb-3">
+                    <input class="form-control" id="zipCode" type="text" name="zipCodes[]" placeholder="Zip Code">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <select name="states[]" id="state-select-${ number }" style="width: 100%;" class="form-control">
+                        <option value="New South Wales">New South Wales</option>
+                        <option value="Victoria">Victoria</option>
+                        <option value="Queesland">Queesland</option>
+                        <option value="South Australia">South Australia</option>
+                        <option value="Western Australia">Western Australia</option>
+                        <option value="Tasmania">Tasmania</option>
+                        <option value="North Territory">North Territory</option>
+                        <option value="Australian Capital Territory">Australian Capital Territory</option>
+                    </select>
+                </div>
+            </div>
+            `);
             $(".rows").append(ele);
+            $('#state-select-' + number).select2({
+                theme: 'bootstrap-5',
+                minimumResultsForSearch: -1
+                // allowClear: true,
+            });
         }else{
             alert("Only 5 addresses allowed");
         }
@@ -265,8 +310,8 @@ $(function () {
                     $("#customerName").val(customer.name);
                     $("#customerPhoneNumber").val(customer.phone_number);
                     $("#customerEmailAddress").val(customer.email);
-                    $("#customerDeliverAddress").val(response.deliverAddress);
-                    $("#filled_address").text(response.deliverAddress);
+                    $("#customerDeliverAddress").val(response.deliverAddress.address + ", " + response.deliverAddress.suburb + " " + response.deliverAddress.zip  + ", " + response.deliverAddress.state + ", " + response.deliverAddress.country + ".");
+                    $("#filled_address").text(response.deliverAddress.address + ", " + response.deliverAddress.suburb + " " + response.deliverAddress.zip  + ", " + response.deliverAddress.state + ", " + response.deliverAddress.country + ".");
                 }
             });
         }else{

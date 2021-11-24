@@ -38,4 +38,5 @@ Route::middleware('auth:customer-api')->post('test', [ProductController::class, 
 Route::group(['middleware' => ['auth:customer-api']], function() {
     //Customer APIs
     Route::post('profile', [CustomerController::class, 'profile']);
+    Route::post('updateInfo', [CustomerController::class, 'updateCustomerInfo']);
 });

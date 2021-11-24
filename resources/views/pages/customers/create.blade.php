@@ -100,20 +100,41 @@
                 </div>
                 <div class="card-body">
                     <div class="rows">
-                        <label for="customerDeliverAddress">{{ __('Deliver addresses') }}</label>
+                        {{-- <label for="customerDeliverAddress">{{ __('Deliver addresses') }}</label> --}}
                         <div class="row">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default"><input type="radio" checked name="default" value="0"></span>
-                                <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]">
+                            <div class="col-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default"><input type="radio" checked name="default" value="0"></span>
+                                    <input class="form-control @error('deliverAddresses.*') is-invalid @enderror" id="customerDeliverAddress" type="text" name="deliverAddresses[]" placeholder="Address">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group mb-3">
+                                    <input class="form-control @error('suburbs.*') is-invalid @enderror" id="suburb" type="text" name="suburbs[]" placeholder="City / Suburb">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group mb-3">
+                                    <input class="form-control @error('zipCodes.*') is-invalid @enderror" id="zipCode" type="text" name="zipCodes[]" placeholder="Zip Code">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group mb-3">
+                                    <select name="states[]" id="state-select" style="width: 100%;" class="form-control @error('states.*') is-invalid @enderror">
+                                        <option value="New South Wales">New South Wales</option>
+                                        <option value="Victoria">Victoria</option>
+                                        <option value="Queensland">Queensland</option>
+                                        <option value="South Australia">South Australia</option>
+                                        <option value="Western Australia">Western Australia</option>
+                                        <option value="Tasmania">Tasmania</option>
+                                        <option value="North Territory">North Territory</option>
+                                        <option value="Australian Capital Territory">Australian Capital Territory</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    @error('customerDeliverAddresses.*')
-                        <span class="invalid-feedback d-block mb-2" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                     <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
                     </div>

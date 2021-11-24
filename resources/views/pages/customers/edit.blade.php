@@ -105,18 +105,53 @@
                 </div>
                 <div class="card-body">
                     <div class="rows">
-                        <label for="customerDeliverAddress">{{ __('Deliver address') }}</label>
+                        {{-- <label for="customerDeliverAddress">{{ __('Deliver address') }}</label> --}}
                         @if ($customer->addresses)
                             @php
                                 $addressJson = json_decode($customer->addresses);
                             @endphp
                             @foreach ($addressJson->addresses as $index => $address)
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
                                             <input type="radio" {{ $index == $addressJson->default ?  "checked" : "" }}  name="default" value="{{ $index }}">
                                         </span>
-                                        <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="{{ $address }}">
+                                        <input class="form-control" id="customerDeliverAddress" type="text" name="customerDeliverAddresses[]" value="">
+                                    </div>
+                                </div> --}}
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="left" title="Set as default">
+                                                <input type="radio" {{ $index == $addressJson->default ?  "checked" : "" }} name="default" value="{{ $index }}">
+                                            </span>
+                                            <input class="form-control @error('deliverAddresses.' . $index) is-invalid @enderror" id="customerDeliverAddress" type="text" name="deliverAddresses[]" placeholder="Address" value="{{ $address->address }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group mb-3">
+                                            <input class="form-control @error('suburbs.' . $index) is-invalid @enderror" id="suburb" type="text" name="suburbs[]" placeholder="City / Suburb" value="{{ $address->suburb }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group mb-3">
+                                            <input class="form-control @error('zipCodes.' . $index) is-invalid @enderror" id="zipCode" type="text" name="zipCodes[]" placeholder="Zip Code" value="{{ $address->zip }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group mb-3">
+                                            <select name="states[]" id="state-select-{{ $index }}" style="width: 100%;" class="form-control @error('states.*') is-invalid @enderror">
+                                                <option {{ $address->state == "New South Wales" ? "selected": "" }} value="New South Wales">New South Wales</option>
+                                                <option {{ $address->state == "Victoria" ? "selected": "" }} value="Victoria">Victoria</option>
+                                                <option {{ $address->state == "Queensland" ? "selected": "" }} value="Queensland">Queensland</option>
+                                                <option {{ $address->state == "South Australia" ? "selected": "" }} value="South Australia">South Australia</option>
+                                                <option {{ $address->state == "Western Australia" ? "selected": "" }} value="Western Australia">Western Australia</option>
+                                                <option {{ $address->state == "Tasmania" ? "selected": "" }} value="Tasmania">Tasmania</option>
+                                                <option {{ $address->state == "North Territory" ? "selected": "" }} value="North Territory">North Territory</option>
+                                                <option {{ $address->state == "Australian Capital Territory" ? "selected": "" }} value="Australian Capital Territory">Australian Capital Territory</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach

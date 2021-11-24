@@ -49,25 +49,47 @@ class CustomerController extends Controller
         $request->validate(
             [
                 'customerName' => 'required',
-                // 'customerPhoneNumber' => 'required|numeric',
+                'customerPhoneNumber' => 'required|numeric',
                 'customerEmailAddress' => 'required',
-                'customerDeliverAddresses' => 'required|array',
-                'customerDeliverAddresses.*' => 'required',
+                'deliverAddresses' => 'required|array',
+                'deliverAddresses.*' => 'required',
+                'suburbs' => 'required|array',
+                'suburbs.*' => 'required',
+                'zipCodes' => 'required|array',
+                'zipCodes.*' => 'required',
+                'states' => 'required|array',
+                'states.*' => 'required',
             ],
             [
                 
             ],
             [
-                'customerDeliverAddresses.*' => 'deliver address',
+                'deliverAddresses.*' => 'deliver address',
             ],
         );
-        $addresses = $request->customerDeliverAddresses;
+
+        if(count($request->deliverAddresses) > 5){
+            Session::flash('message', 'Only 5 addresses allowed!.');
+            Session::flash('class', 'bg-danger');
+            return redirect()->back();
+        }
+
+        $addresses = $request->deliverAddresses;
         
         $addressJson = [];
-        foreach($addresses as $address){
-            $addressJson['addresses'][] = $address; 
+        
+        for($i = 0; $i < count($addresses); $i++){
+            $addressJson['addresses'][$i] = [
+                'name' => 'Address ' . $i + 1,
+                'address' => $request->deliverAddresses[$i],
+                'suburb' => $request->suburbs[$i],
+                'zip' => (int)$request->zipCodes[$i],
+                'state' => $request->states[$i],
+                'country' => "Australia"
+            ];
         }
-        $addressJson['default'] = $request->default;
+
+        $addressJson['default'] = (int)$request->default;
 
         $customer = Customer::create([
             'name' => $request->customerName,
@@ -120,27 +142,48 @@ class CustomerController extends Controller
         $request->validate(
             [
                 'customerName' => 'required',
-                // 'customerPhoneNumber' => 'required',
+                'customerPhoneNumber' => 'required|numeric',
                 'customerEmailAddress' => 'required',
-                'customerDeliverAddresses' => 'required',
+                'deliverAddresses' => 'required|array',
+                'deliverAddresses.*' => 'required',
+                'suburbs' => 'required|array',
+                'suburbs.*' => 'required',
+                'zipCodes' => 'required|array',
+                'zipCodes.*' => 'required',
+                'states' => 'required|array',
+                'states.*' => 'required',
+            ],
+            [
+                
+            ],
+            [
+                'deliverAddresses.*' => 'deliver address',
             ],
         );
 
         // Return if there are more than 5 addresses
-        if(count($request->customerDeliverAddresses) > 5){
+        if(count($request->deliverAddresses) > 5){
             Session::flash('message', 'Only 5 addresses allowed!.');
             Session::flash('class', 'bg-danger');
             return redirect()->back();
         }
-        // Update addresses
-        $addresses = $request->customerDeliverAddresses;
+        // Update addresses        
+        $addresses = $request->deliverAddresses;
         
         $addressJson = [];
-        foreach($addresses as $address){
-            if($address)
-                $addressJson['addresses'][] = $address; 
+        
+        for($i = 0; $i < count($addresses); $i++){
+            $addressJson['addresses'][$i] = [
+                'name' => 'Address ' . $i + 1,
+                'address' => $request->deliverAddresses[$i],
+                'suburb' => $request->suburbs[$i],
+                'zip' => (int)$request->zipCodes[$i],
+                'state' => $request->states[$i],
+                'country' => "Australia"
+            ];
         }
-        $addressJson['default'] = $request->default;
+
+        $addressJson['default'] = (int)$request->default;
         
         $customer = Customer::where('user_id', Auth::user()->id)->find($id);
 
@@ -152,7 +195,7 @@ class CustomerController extends Controller
             'company_id' => $request->company_id,
         ]);
 
-        Session::flash('message', 'Create customer successfully.');
+        Session::flash('message', 'Update customer successfully.');
         Session::flash('class', 'bg-success');
         return redirect()->back();
     }
