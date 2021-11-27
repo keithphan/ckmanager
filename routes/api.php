@@ -40,4 +40,7 @@ Route::group(['middleware' => ['auth:customer-api']], function() {
     Route::post('profile', [CustomerController::class, 'profile']);
     Route::post('updateInfo', [CustomerController::class, 'updateCustomerInfo']);
     Route::post('updateAddresses', [CustomerController::class, 'updateCustomerAddresses']);
+    Route::post('addAddress', [CustomerController::class, 'addAddress']);
+    Route::post('deleteAddress', [CustomerController::class, 'deleteAddress']);
+    Route::post('changeDefaultAddress', [CustomerController::class, 'changeDefaultAddress']);
 });
