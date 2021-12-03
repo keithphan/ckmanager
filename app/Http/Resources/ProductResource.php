@@ -23,6 +23,9 @@ class ProductResource extends JsonResource
             'price' => $this->price / 100,
             'origin_price' => $this->original_price / 100,
             'category' => new CategoryResource($this->category),
+            'short_description' => $this->short_description,
+            'long_description' => $this->long_description,
+            'details' => json_decode($this->details),
         ];
     }
 }

@@ -277,15 +277,58 @@ class ProductController extends Controller
         }
 
         if($slug == 'fruit' || $slug == 'vegetables'){
+            // return [
+            //     'energy' => implode(' | ', $request->energy),
+            //     'protein' => implode(' | ', $request->protein),
+            //     'fat' => implode(' | ', $request->fat),
+            //     'saturated' => implode(' | ', $request->saturated),
+            //     'carbohydrate' => implode(' | ', $request->carbohydrate),
+            //     'sugars' => implode(' | ', $request->sugars),
+            //     'dietary_fibre' => implode(' | ', $request->dietary_fibre),
+            //     'sodium' => implode(' | ', $request->sodium),
+            // ];
+
             return [
-                'energy' => implode(' | ', $request->energy),
-                'protein' => implode(' | ', $request->protein),
-                'fat' => implode(' | ', $request->fat),
-                'saturated' => implode(' | ', $request->saturated),
-                'carbohydrate' => implode(' | ', $request->carbohydrate),
-                'sugars' => implode(' | ', $request->sugars),
-                'dietary_fibre' => implode(' | ', $request->dietary_fibre),
-                'sodium' => implode(' | ', $request->sodium),
+                [   
+                    'name' => 'energy',
+                    'display_name' => 'Energy',
+                    'data' => $request->energy,
+                ],
+                [
+                    'name' => 'protein',
+                    'display_name' => 'Protein',
+                    'data' => $request->protein,
+                ],
+                [
+                    'name' => 'fat',
+                    'display_name' => 'Fat',
+                    'data' => $request->fat,
+                ],
+                [
+                    'name' => 'saturated',
+                    'display_name' => 'Saturated',
+                    'data' => $request->saturated,
+                ],
+                [
+                    'name' => 'carbohydrate',
+                    'display_name' => 'Carbohydrate',
+                    'data' => $request->carbohydrate,
+                ],
+                [
+                    'name' => 'sugars',
+                    'display_name' => 'Sugars',
+                    'data' => $request->sugars,
+                ],
+                [
+                    'name' => 'dietary_fibre',
+                    'display_name' => 'Dietary fibre',
+                    'data' => $request->dietary_fibre,
+                ],
+                [
+                    'name' => 'sodium',
+                    'display_name' => 'Sodium',
+                    'data' => $request->sodium,
+                ],
             ];
         }
     }

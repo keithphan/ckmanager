@@ -131,20 +131,39 @@ class CustomerController extends Controller
 
         if($customer->company->id == $request->companyId){
             $addresses = json_decode($customer->addresses);
-            $addresses->addresses[] = [
-                "name" => $request->address['name'],
-                "address" => $request->address['address'],
-                "suburb" => $request->address['suburb'],
-                "zip" => $request->address['zip'],
-                "state" => $request->address['state'],
-                "country" => "Australia"
-            ];
+            if($addresses){
+                $addresses->addresses[] = [
+                    "name" => $request->address['name'],
+                    "address" => $request->address['address'],
+                    "suburb" => $request->address['suburb'],
+                    "zip" => $request->address['zip'],
+                    "state" => $request->address['state'],
+                    "country" => "Australia"
+                ];
+    
+                $customer->update([
+                    'addresses' =>  json_encode($addresses),
+                ]);
 
-            $customer->update([
-                'addresses' =>  json_encode($addresses),
-            ]);
+                return $addresses;
+            }else{
+                $addressJson = [];
+                $addressJson['addresses'][] = [
+                    "name" => $request->address['name'],
+                    "address" => $request->address['address'],
+                    "suburb" => $request->address['suburb'],
+                    "zip" => $request->address['zip'],
+                    "state" => $request->address['state'],
+                    "country" => "Australia"
+                ];
 
-            return $addresses;
+                $addressJson['default'] = 0;
+                $customer->update([
+                    'addresses' =>  json_encode($addressJson),
+                ]);
+
+                return $addressJson;
+            }
         }
     }
 

@@ -39,6 +39,17 @@ class AuthenticationController extends Controller
             'customer.lastname' => 'required|string',
             'customer.email' => 'required|email',
             'customer.password' => 'required|min:6',
+        ],[
+            'required' => "* :attribute is required!",
+            'string' => "* :attribute is invalid!",
+            'email' => "* :attribute is invalid!",
+            'min' => "* :attribute is at least 6 characters!",
+        ],
+        [
+            'customer.firstname' => 'First name',
+            'customer.lastname' => 'Last name',
+            'customer.email' => 'Email',
+            'customer.password' => 'Password',
         ]);
 
         $customer = Customer::where([
@@ -47,7 +58,7 @@ class AuthenticationController extends Controller
         ])->get()->first();
 
         if($customer){
-            return response([ 'message' => '* Your email is taken!' ]);
+            return response(['errors' => [ 'customer.email' => '* Your email is taken!' ]], 422);
         }
         
         $company = Company::find($request->companyId);
