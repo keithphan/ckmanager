@@ -1,6 +1,8 @@
 # CkManager
 
 Visit at <a href="https://ckmanager.com/" target="_blank">ckmanager.com</a>
+Username: test@gmail.com
+Password: 123456789
 
 CkManager is a web-application to manage business operations from many user's e-commerce websites:
 
